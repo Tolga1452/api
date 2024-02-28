@@ -21,14 +21,18 @@ app.use((req, res, next) => {
 });
 
 app.get('/theme-color', async (req, res) => {
-    let wallpaperPath = await getWallpaper({
-        screen: 'main'
-    });
-    let themeColor = await getColor(wallpaperPath);
-
-    return res.json({
-        color: convertToHex(themeColor)
-    });
+    try {
+        let wallpaperPath = await getWallpaper({
+            screen: 'main'
+        });
+        let themeColor = await getColor(wallpaperPath);
+    
+        return res.json({
+            color: convertToHex(themeColor)
+        });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    };
 });
 
 app.listen(3010, console.log('Server started on port 3010'));
